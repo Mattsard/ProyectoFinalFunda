@@ -28,5 +28,9 @@ namespace MesaPartes
         {
             return $"({Codigo}) -> {Solicitante} - {TipoDocumento} - {Asunto} - {Fecha} - {Estado}";
         }
+        public void CambiarEstado(string nuevoEstado)
+        {
+            Estado = nuevoEstado;
+        }
     }
 }

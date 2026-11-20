@@ -81,5 +81,94 @@ namespace MesaPartes
                 Console.WriteLine($"{expedientes[i].ToString()}");
             }
         }
+        public static int BuscarCodigo(Expediente[] expedientes, int cantidad)
+        {
+            if (cantidad == 0)
+            {
+                Console.WriteLine("No hay expedientes registrados.");
+                return -1;
+            }
+
+            string codigo = Program.LeerCodigoBuscar("Ingrese el código del expediente");
+            if (codigo == null) return -1;
+
+            int indice = BuscarIndice(expedientes, cantidad, codigo);
+            if (indice == -1)
+            {
+                Console.WriteLine($"No se encontró ningún expediente con el código '{codigo}'.");
+                return -1;
+            }
+
+            Console.WriteLine("¡Expediente encontrado!");
+            Console.WriteLine($"{expedientes[indice].ToString()}");
+            return indice;
+        }
+
+        public static void ModificarExpediente(Expediente[] expedientes, int cantidad)
+        {
+            Console.WriteLine("--- MODIFICAR ESTADO DE UN EXPEDIENTE ---");
+
+            int indice = BuscarCodigo(expedientes, cantidad);
+            if (indice == -1) return;
+
+            string nuevoEstado = Program.LeerEstado();
+            if (nuevoEstado == null) return;
+
+            if (!Program.Confirmar("¿Confirma la modificación?"))
+            {
+                Console.WriteLine("Modificación cancelada.");
+                return;
+            }
+
+            expedientes[indice].CambiarEstado(nuevoEstado);
+            Console.WriteLine("¡Estado modificado con éxito!");
+        }
+
+        public static void EliminarExpediente(Expediente[] expedientes, ref int cantidad)
+        {
+            Console.WriteLine("--- ELIMINAR EXPEDIENTE ---");
+
+            int indice = BuscarCodigo(expedientes, cantidad);
+            if (indice == -1) return;
+
+            if (!Program.Confirmar("¿Está seguro de eliminar este expediente?"))
+            {
+                Console.WriteLine("Eliminación cancelada.");
+                return;
+            }
+
+            for (int k = indice; k < cantidad - 1; k++)
+            {
+                expedientes[k] = expedientes[k + 1];
+            }
+            expedientes[cantidad - 1] = null;
+            cantidad--;
+
+            Console.WriteLine("¡Expediente eliminado con éxito!");
+        }
+        public static void OrdenarPorCodigo(Expediente[] expedientes, int cantidad)
+        {
+            if (cantidad == 0)
+            {
+                Console.WriteLine("No hay expedientes para ordenar.");
+                return;
+            }
+
+            for (int i = 0; i < cantidad - 1; i++)
+            {
+                for (int j = 0; j < cantidad - i - 1; j++)
+                {
+                    int Comparacion = string.Compare(expedientes[j].Codigo, expedientes[j + 1].Codigo, StringComparison.OrdinalIgnoreCase);
+                    if (Comparacion > 0)
+                    {
+                        Expediente Aux = expedientes[j];
+                        expedientes[j] = expedientes[j + 1];
+                        expedientes[j + 1] = Aux;
+                    }
+                }
+            }
+
+            Console.WriteLine("¡Expedientes ordenados por código con éxito!");
+        }
     }
 }

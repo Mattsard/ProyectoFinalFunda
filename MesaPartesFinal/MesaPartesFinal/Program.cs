@@ -22,6 +22,10 @@ namespace MesaPartes
                 Console.WriteLine("1. Registrar expediente");
                 Console.WriteLine("2. Listar expedientes");
                 Console.WriteLine("0. Salir");
+                Console.WriteLine("3. Buscar expediente por código");
+                Console.WriteLine("4. Ordenar expedientes (burbuja)");
+                Console.WriteLine("5. Modificar estado de un expediente");
+                Console.WriteLine("6. Eliminar expediente");
                 do
                 {
                 } while (!LeerEntero(0, out op, "Seleccione una opción, valor mínimo:"));
@@ -36,6 +40,18 @@ namespace MesaPartes
                         break;
                     case 2:
                         clsCatalogo.VisualizarCatalogo(expedientes, cantidad);
+                        break;
+                    case 3:
+                        clsCatalogo.BuscarCodigo(expedientes, cantidad);
+                        break;
+                    case 4:
+                        clsCatalogo.OrdenarPorCodigo(expedientes, cantidad);
+                        break;
+                    case 5:
+                        clsCatalogo.ModificarExpediente(expedientes, cantidad);
+                        break;
+                    case 6:
+                        clsCatalogo.EliminarExpediente(expedientes, ref cantidad);
                         break;
                     default:
                         Console.WriteLine("Ingrese una opción valida ....");
@@ -65,7 +81,11 @@ namespace MesaPartes
             }
             return texto.Trim();
         }
-
+        public static bool Confirmar(string mensaje)
+        {
+            string respuesta = Leer(mensaje + " (S/N)");
+            return respuesta.ToUpper() == "S";
+        }
         public static string LeerCodigo()
         {
             string codigo = Leer("Ingrese el código único (formato EXP-001)").ToUpper();
@@ -82,7 +102,17 @@ namespace MesaPartes
             }
             return codigo;
         }
+        public static string LeerCodigoBuscar(string mensaje)
+        {
+            string codigo = Leer(mensaje).ToUpper();
 
+            if (codigo.Length == 0)
+            {
+                Console.WriteLine("Error: El código no puede estar vacío.");
+                return null;
+            }
+            return codigo;
+        }
         public static string LeerTexto(string mensaje, string campo)
         {
             string texto = Leer(mensaje);
