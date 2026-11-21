@@ -165,7 +165,7 @@ namespace MesaPartes
             int pos = IndiceDe(Tipos, texto);
             if (pos == -1)
             {
-                Console.WriteLine("Error: Fecha no válida. Use el formato DD/MM/AAAA (día 01-31, mes 01-12).");
+                Console.WriteLine("Error: Tipo de documento no válido. Opciones: " + string.Join(", ", Tipos));
                 return null;
             }
             return Tipos[pos];
@@ -264,7 +264,7 @@ namespace MesaPartes
             {
                 return false;
             }
-            if (dia < 1 || dia > 31)
+            if (año < 1 || dia < 1 || dia > DateTime.DaysInMonth(año, mes))
             {
                 return false;
             }
