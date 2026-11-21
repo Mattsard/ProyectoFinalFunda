@@ -25,11 +25,12 @@ namespace MesaPartes
                 Console.WriteLine("=== SISTEMA MESA DE PARTES - EF ===");
                 Console.WriteLine("1. Registrar expediente");
                 Console.WriteLine("2. Listar expedientes");
-                Console.WriteLine("0. Salir");
                 Console.WriteLine("3. Buscar expediente por código");
                 Console.WriteLine("4. Ordenar expedientes (burbuja)");
                 Console.WriteLine("5. Modificar estado de un expediente");
                 Console.WriteLine("6. Eliminar expediente");
+                Console.WriteLine("7. Resumen por tipo y estado");
+                Console.WriteLine("8. Buscar por código (recursivo)");
                 Console.WriteLine("0. Salir (guarda los cambios)");
                 do
                 {
@@ -58,6 +59,12 @@ namespace MesaPartes
                         break;
                     case 6:
                         clsCatalogo.EliminarExpediente(expedientes, ref cantidad);
+                        break;
+                    case 7:
+                        clsCatalogo.MostrarResumen(expedientes, cantidad);
+                        break;
+                    case 8:
+                        clsCatalogo.BuscarCodigoRecursivo(expedientes, cantidad);
                         break;
                     default:
                         Console.WriteLine("Ingrese una opción valida ....");

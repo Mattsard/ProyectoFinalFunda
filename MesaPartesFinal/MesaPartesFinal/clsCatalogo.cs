@@ -103,6 +103,42 @@ namespace MesaPartes
             Console.WriteLine($"{expedientes[indice].ToString()}");
             return indice;
         }
+        public static int BuscarRecursivo(Expediente[] expedientes, int cantidad, string codigo, int indice)
+        {
+            if (indice >= cantidad)
+            {
+                return -1;
+            }
+
+            if (expedientes[indice].Codigo == codigo)
+            {
+                return indice;
+            }
+
+            return BuscarRecursivo(expedientes, cantidad, codigo, indice + 1);
+        }
+
+        public static void BuscarCodigoRecursivo(Expediente[] expedientes, int cantidad)
+        {
+            if (cantidad == 0)
+            {
+                Console.WriteLine("No hay expedientes registrados.");
+                return;
+            }
+
+            string codigo = Program.LeerCodigoBuscar("Ingrese el código del expediente");
+            if (codigo == null) return;
+
+            int indice = BuscarRecursivo(expedientes, cantidad, codigo, 0);
+            if (indice == -1)
+            {
+                Console.WriteLine($"No se encontró ningún expediente con el código '{codigo}'.");
+                return;
+            }
+
+            Console.WriteLine($"¡Expediente encontrado en la posición {indice + 1}!");
+            Console.WriteLine($"{expedientes[indice].ToString()}");
+        }
 
         public static void ModificarExpediente(Expediente[] expedientes, int cantidad)
         {
@@ -169,6 +205,39 @@ namespace MesaPartes
             }
 
             Console.WriteLine("¡Expedientes ordenados por código con éxito!");
+        }
+        public static void MostrarResumen(Expediente[] expedientes, int cantidad)
+        {
+            int[,] matriz = new int[Program.Tipos.Length, Program.Estados.Length];
+
+            for (int i = 0; i < cantidad; i++)
+            {
+                int fila = Program.IndiceDe(Program.Tipos, expedientes[i].TipoDocumento);
+                int columna = Program.IndiceDe(Program.Estados, expedientes[i].Estado);
+
+                if (fila != -1 && columna != -1)
+                {
+                    matriz[fila, columna]++;
+                }
+            }
+
+            Console.WriteLine("--- RESUMEN: TIPO DE DOCUMENTO POR ESTADO ---");
+
+            for (int f = 0; f < Program.Tipos.Length; f++)
+            {
+                Console.Write(Program.Tipos[f] + " -> ");
+
+                for (int c = 0; c < Program.Estados.Length; c++)
+                {
+                    Console.Write($"{Program.Estados[c]}: {matriz[f, c]}");
+                    if (c < Program.Estados.Length - 1)
+                    {
+                        Console.Write(" | ");
+                    }
+                }
+
+                Console.WriteLine();
+            }
         }
     }
 }
