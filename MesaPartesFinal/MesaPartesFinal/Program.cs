@@ -6,6 +6,7 @@ namespace MesaPartes
     {
         public static string[] Tipos = { "Solicitud", "Carta", "Oficio", "Reclamo" };
         public static string[] Estados = { "Registrado", "En proceso", "Atendido", "Rechazado" };
+        static string ruta = "Datos/expedientes.txt";
 
         static void Main(string[] args)
         {
@@ -13,6 +14,9 @@ namespace MesaPartes
 
             int cantidad = 0;
             Expediente[] expedientes = new Expediente[5];
+
+            clsArchivos.LeerArchivo(ruta, ref expedientes, ref cantidad);
+            Console.WriteLine($"Expedientes cargados desde el archivo: {cantidad}");
 
             int op = 0;
             do
@@ -26,6 +30,7 @@ namespace MesaPartes
                 Console.WriteLine("4. Ordenar expedientes (burbuja)");
                 Console.WriteLine("5. Modificar estado de un expediente");
                 Console.WriteLine("6. Eliminar expediente");
+                Console.WriteLine("0. Salir (guarda los cambios)");
                 do
                 {
                 } while (!LeerEntero(0, out op, "Seleccione una opción, valor mínimo:"));
@@ -33,6 +38,7 @@ namespace MesaPartes
                 switch (op)
                 {
                     case 0:
+                        GuardarCambios(expedientes, cantidad);
                         Console.WriteLine("Saliendo ....");
                         break;
                     case 1:
@@ -59,7 +65,11 @@ namespace MesaPartes
                 }
             } while (op != 0);
         }
-
+        static void GuardarCambios(Expediente[] expedientes, int cantidad)
+        {
+            clsArchivos.Guardar(ruta, expedientes, cantidad);
+            Console.WriteLine("Cambios guardados en el archivo.");
+        }
         public static bool LeerEntero(int minimo, out int valor, string mensaje)
         {
             Console.WriteLine($"{mensaje} {minimo}");
